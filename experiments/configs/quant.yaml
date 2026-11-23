@@ -1,0 +1,10 @@
+# W4A4 RTN quantization sweep (WP-13). Each entry -> one CIMConfig per model.
+configs:
+  mxfp4_floor:  {fmt: mxfp4, scale_rule: ocp_floor, attn_policy: mxfp8}
+  mxfp4_v11:    {fmt: mxfp4, scale_rule: ocp_v11,   attn_policy: mxfp8}
+  mxfp4_rceil:  {fmt: mxfp4, scale_rule: rceil,     attn_policy: mxfp8}
+  nvfp4_hw:     {fmt: nvfp4, nv_convention: hw,     attn_policy: mxfp8}
+ablations:   # attention-policy ablation on the first model only
+  mxfp4_v11_attn_bf16:   {fmt: mxfp4, scale_rule: ocp_v11, attn_policy: bf16}
+  mxfp4_v11_attn_mxfp4:  {fmt: mxfp4, scale_rule: ocp_v11, attn_policy: mxfp4_macro}
+  nvfp4_hw_attn_bf16:    {fmt: nvfp4, nv_convention: hw,  attn_policy: bf16}

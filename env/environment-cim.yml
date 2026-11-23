@@ -1,0 +1,27 @@
+# Project environment. Create: conda env create -f env/environment-cim.yml && conda activate cim && pip install -e ".[dev,rtl]"
+# torch (CUDA 12.6 wheel): TMPDIR=~/tmp pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu126
+# (/tmp is too small on this machine for the torch wheel - always set TMPDIR)
+name: cim
+channels: [conda-forge]
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - pandas
+  - pyyaml
+  - matplotlib
+  - pytest
+  - pytest-xdist
+  - hypothesis
+  - ruff
+  - verilator
+  - yosys
+  - iverilog
+  - pip
+  - pip:
+      - "cocotb>=2.0"
+      - cocotb-test
+      - "transformers>=4.45"
+      - "datasets>=2.20"
+      - accelerate
+      - safetensors

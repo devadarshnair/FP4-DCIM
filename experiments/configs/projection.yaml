@@ -1,0 +1,73 @@
+# Technology projection factors (informational only). Fill ONLY from opened primary sources (WP-62).
+#
+# WP-62 result (2026-10-31):
+#   * stillmaker2017scaling was opened in full (publisher PDF, Integration 58:74-81). Its Table 5 (p. 80)
+#     covers 180/130/90/65 nm bulk, 45/32 nm high-k (HP, LP), 20/16/14/10/7 nm multi-gate (HP, LSTP).
+#     It has NO 28 nm and NO 22 nm node -> sky130_to_28nm.energy_factor CANNOT come from this source and stays null.
+#   * Stillmaker EnergyFactor(node, V) / DelayFactor(node, V) already contain the supply voltage (Eqs. 6, 9).
+#     A Stillmaker ratio evaluated at (V_target, V_source) must NOT be multiplied by (V_target/V_source)^2 again
+#     (src/cimfp4/power/projection.py does that) -> 4x optimistic for 1.8 V -> 0.9 V. Call it with v_source == v_target.
+#   * The DeepScaleTool factors (sarangi2021deepscaletool) are node-at-own-nominal-voltage ratios (Intel silicon
+#     trends); they also already include voltage scaling. 130 nm and 90 nm points are extrapolated by the authors.
+#   * Spread between the two sources for sky130(1.8 V) -> ~28 nm is ~10x (0.015 ... 0.15). Treat any absolute
+#     28 nm number as a band, never a point.
+
+sky130_to_28nm:
+  source: stillmaker2017scaling   # opened in full in WP-62
+  energy_factor: null             # NOT AVAILABLE: Stillmaker Table 5 (p. 80) has no 28 nm node; see bracket entries below
+  delay_factor: null
+  table: "Table 5"
+  page: 80
+  v_source: 1.8
+  v_target: 0.9
+
+# --- Bracketing values computed from Stillmaker Table 5 (p. 80) with Eqs. (5),(6),(8),(9) (pp. 78-79). ---
+# Source node: 130 nm bulk PTM (ITRS nominal 1.2 V per Table 2 p. 75; 1.8 V is inside the simulated range, Fig. 4 p. 78:
+# 130 nm data 0.65-1.8 V). Ratios are E_x/E_y and D_x/D_y with voltage INCLUDED.
+stillmaker_130bulk_1v8_to_32hp_0v9:
+  source: stillmaker2017scaling
+  table: "Table 5"
+  page: 80
+  v_source: 1.8
+  v_target: 0.9
+  voltage_included: true          # use with v_source == v_target in project_energy()
+  energy_ratio: 0.0325            # 0.4571 fJ / 14.06 fJ
+  delay_ratio: 0.325              # 8.36 ps / 25.73 ps
+stillmaker_130bulk_1v8_to_20hpmg_0v9:
+  source: stillmaker2017scaling
+  table: "Table 5"
+  page: 80
+  v_source: 1.8
+  v_target: 0.9
+  voltage_included: true
+  energy_ratio: 0.0143            # 0.2008 fJ / 14.06 fJ
+  delay_ratio: 0.368
+stillmaker_130bulk_1v2_to_32hp_0v97_nominal:   # both at ITRS nominal VDD (Table 2, p. 75)
+  source: stillmaker2017scaling
+  table: "Table 5"
+  page: 80
+  v_source: 1.2
+  v_target: 0.97
+  voltage_included: true
+  energy_ratio: 0.1035
+  delay_ratio: 0.316
+
+# --- DeepScaleTool (Sarangi & Baas, ISCAS 2021): constants from DeepScaleTool.xlsm (SourceForge, 2021-03-03),
+# VBA Module1 Sub Energy()/delay()/area(); tool output reproduces the paper's Fig. 2 (130->45 nm: E 4, D 2.42,
+# P 1.641, EDP 9.725) and the in-text 45->32 power factor 1.238 exactly. Normalized to 65 nm = 1. ---
+deepscaletool_130_to_28nm:
+  source: sarangi2021deepscaletool
+  table: "DeepScaleTool.xlsm v2021-03-03, Module1 (validated vs paper Fig. 2)"
+  page: "Fig. 2, arXiv:2102.10195v1 PDF p. 4 (paper p. 3)"
+  voltage_included: true          # node-to-node at each node's own operating voltage; no V input exists
+  energy_ratio: 0.1468            # 0.37 / 2.52  (tool "scaling factor" 6.811)
+  delay_ratio: 0.342              # 0.67 / 1.96  (2.925)
+  area_ratio: 0.0422              # 0.35 / 8.3   (23.71)
+deepscaletool_130_to_22nm:
+  source: sarangi2021deepscaletool
+  table: "DeepScaleTool.xlsm v2021-03-03, Module1 (validated vs paper Fig. 2)"
+  page: "Fig. 2, arXiv:2102.10195v1 PDF p. 4 (paper p. 3)"
+  voltage_included: true
+  energy_ratio: 0.1190            # 0.30 / 2.52  (8.400)
+  delay_ratio: 0.316              # 0.62 / 1.96  (3.161)
+  area_ratio: 0.0265              # 0.22 / 8.3   (37.73)

@@ -1,0 +1,8 @@
+# T1.4 coverage waivers (machine-readable; rationale in docs/spec/coverage_plan.md §Waivers).
+# family -> bin -> one-line reason. "all" applies to every design family.
+int5:
+  C_B2B_SAME_SET: "unreachable by design: the bit-serial INT5 macro accepts one op per 5 cycles (op_ready = !busy || bit_i == 4), so ops never fire in consecutive cycles; its back-to-back cadence is BS_B2B"
+  C_NV: "baseline (a) is MXFP4-only (op_nv must be 0, numerics.md); NVFP4 is not part of the INT5 claims"
+  C_NV_TOGGLE: "MXFP4-only design (see C_NV)"
+  C_NV_TOGGLE_B2B: "MXFP4-only design (see C_NV)"
+  C_NV_TOGGLE_SAMESET: "MXFP4-only design (see C_NV)"

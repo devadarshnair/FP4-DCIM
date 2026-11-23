@@ -1,0 +1,18 @@
+# Tool/package versions in the 'cim' conda env (generated 2026-10-30)
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.1.0
+torch==2.14.1+cu126
+transformers==5.22.1
+datasets==5.1.0
+accelerate==1.15.0
+cocotb==2.1.0
+hypothesis==6.170.13
+pytest==9.2.0
+yaml==6.0.3
+cuda 12.6 available True
+python 3.12.16
+Verilator 5.052 2026-09-05 rev conda-forge build 
+Yosys 0.69+
+Icarus Verilog version 13.0 (stable) (v13_0)
+lm-eval==0.4.13

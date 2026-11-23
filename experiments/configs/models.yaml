@@ -1,0 +1,22 @@
+# Models used in experiments. `revision` is pinned to a commit sha at first use (recorded by e04/e12
+# into results/*/config.yaml); licenses: only Apache-2.0/MIT models produce public stimulus.
+qwen2.5-0.5b:
+  hf_id: Qwen/Qwen2.5-0.5B
+  license: Apache-2.0
+  revision: null        # resolved & logged at run time
+smollm2-360m:
+  hf_id: HuggingFaceTB/SmolLM2-360M
+  license: Apache-2.0
+  revision: null
+gpt2-large:
+  hf_id: openai-community/gpt2-large
+  license: MIT
+  revision: null
+qwen2-1.5b:
+  hf_id: Qwen/Qwen2-1.5B
+  license: Apache-2.0
+  revision: null
+llama-3.2-1b:
+  hf_id: meta-llama/Llama-3.2-1B
+  license: Llama-3.2-Community (gated; needs an HF access token)
+  revision: null

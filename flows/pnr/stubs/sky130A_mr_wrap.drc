@@ -1,0 +1,4 @@
+# T3.1: OpenLane2 2.3.10 passes -rd topcell=..., the ciel sky130A_mr.drc deck reads $top_cell.
+# Map the variable and include the unmodified PDK deck.
+$top_cell = $topcell if $top_cell.nil? && !$topcell.nil?
+# %include ~/.ciel/ciel/sky130/versions/1c8019c4421c99348a0ec78f4e969eed6fb5c647/sky130A/libs.tech/klayout/drc/sky130A_mr.drc

@@ -1,0 +1,12 @@
+# Formal equivalence: rtl/baselines/digital_mac/generic_unit.sv == generated LUT spec (WP-39).
+read_verilog -sv rtl/src/row_driver.sv rtl/baselines/digital_mac/generic_leaf.sv rtl/baselines/digital_mac/generic_unit.sv
+read_verilog -sv tb/formal/gen/leaf_spec.sv
+prep
+memory_map
+opt -fast
+rename generic_unit gold_impl
+miter -equiv -flatten -ignore_gold_x -make_outputs gold_impl leaf_spec miter
+hierarchy -top miter
+flatten
+opt -fast
+sat -verify -prove trigger 0 miter

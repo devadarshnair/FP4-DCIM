@@ -1,0 +1,39 @@
+# MIDAS published numbers used as fidelity targets for the MIDAS-like model (WP-37).
+# Source: choi2026midas (JSSC 61(10), Oct 2026). Figures read from 300-dpi renders of refs/MIDAS.pdf
+# (Fig. 13 p. 8; Fig. 21, Fig. 22, Table II p. 11) on 2026-11-01; text numbers from §III-C, §IV-D, §V-C, §VI.
+# Pass criteria (WP-37): Fig. 21 shares within ±5 pp; Fig. 13/22 steps within ±25 % (relative).
+
+conditions:
+  node: Samsung 28 nm
+  breakdown_op_point: {vdd: 0.85, f_mhz: 50}        # Fig. 21 footnote
+  macro: {kbit: 16, area_mm2: 0.062, lca_columns: 16, lcas_per_column: 32, cells_per_lca: 32, wl_bl_per_lca: 3}
+  counter_bits: 4                                    # global down counter G-CNT
+  formats: {MXFP4: {ebits: 2, mbits: 1}, MXFP6: {ebits: 3, mbits: 2}}
+
+fig21_macro_shares_pct:                              # (power, area); sums to 100
+  cell_array:       {power: 11.7, area: 31.2}
+  mfa_adder_tree:   {power: 44.8, area: 24.4}        # MFA = first adder-tree stage, excluded from LCA peripheral
+  lca_peripheral:   {power: 11.8, area: 21.1}        # sense amplifiers, VRDU, sign & exponent latches
+  left_peripheral:  {power: 23.1, area: 11.6}        # row decoders, WL drivers, CIB, LCG, WGSG
+  left_hole:        {power: 3.2,  area: 7.1}         # 4-bit global counter, CA-CIM controller
+  etc:              {power: 5.4,  area: 4.6}         # MEPU, global bit-line driver
+
+fig13_exponent_logic:                                # exponent-related logic in CA-CIM, vs IA-W independent pre-alignment w/ 2C
+  taor:      {power_reduction_pct: 11.3, area_reduction_pct: 8.7}
+  taor_mepd: {power_reduction_pct: 68.8, area_reduction_pct: 63.2}
+  mepd_latency_reduction_pct: {MXFP6: 22.5}          # average over all GPT2 ifmaps; MXFP4 excluded (uses full exp range)
+
+fig22_system_ee_steps:                               # WikiText-2 @ GPT2-Large, MXFP4, 0.85 V, 50 MHz; normalized system EE
+  baseline: 1.00                                     # conventional IA-W independent pre-alignment FP-CIM mapping & dataflow w/ 2C
+  stca_saca: 1.72                                    # +72.0 %
+  taor_mepd: 2.31                                    # +34.3 %
+  sadb_sscr: 2.71                                    # +17.3 %
+
+text_numbers:
+  stca_saca_macro: {ee_gain: 1.72, area_eff_gain: 2.47, vs: "Guo et al. [1] (28 nm 64-kb FP CIM)"}   # §III-C, Fig. 8
+  sscr_vs_sadb_alone_ee_gain_pct: {at_37dB_sqnr: 12.4, max: 27.3, avg_approx_bits: 6}                # §V-C, Fig. 18
+  system_breakdown: {macros_power_pct: 21.8, macros_area_pct: 24.4}                                  # Fig. 20
+  macro_mxfp4: {tflops_per_w: 96.3, tflops_per_mm2: 0.69, vdd: 1.0, f_mhz: 250}
+  macro_mxfp6: {tflops_per_w: 54.1, tflops_per_mm2: 0.52, vdd: 1.0, f_mhz: 250}
+  system_mxfp4: {tflops_per_w: 28.2, vdd: 0.85, f_mhz: 50}
+  system_mxfp6: {tflops_per_w: 17.3, vdd: 0.85, f_mhz: 50}

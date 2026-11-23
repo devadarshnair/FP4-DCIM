@@ -1,0 +1,7 @@
+`verilator_config
+// Project-wide Verilator lint waivers. Every waiver needs a comment explaining why.
+// cim_pkg.sv is a generated parameter package; parameters are consumed by different modules, and
+// linting the package standalone (or with a subset of modules) reports them as unused.
+lint_off -rule UNUSEDPARAM -file "*rtl/include/cim_pkg.sv"
+// Third-party PDK behavioural models (OpenRAM sky130 SRAM) are not ours to fix.
+lint_off -file "*sky130_sram_macros/verilog/*"

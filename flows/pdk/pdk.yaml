@@ -1,0 +1,22 @@
+# PDK registry: paths and versions only (NDA-safe - never commit commercial PDK content).
+sky130A:
+  root: ~/.ciel/sky130A        # installed via ciel (verify path)
+  std_cells: sky130_fd_sc_hd
+  use: relative DSE, real local flow
+nangate45:
+  root: ORFS platform
+  use: relative DSE (ORFS)
+asap7:
+  root: ORFS platform
+  use: relative DSE, scaled-node projection (predictive)
+commercial_28nm:
+  root: null                   # access not yet available
+  use: absolute energy/area claims
+
+# sky130 corners available locally - G1 uses tt_025C_1v80; ss/ff for robustness checks (G2)
+sky130A_corners:
+  lib_dir: ~/.ciel/sky130A/libs.ref/sky130_fd_sc_hd/lib
+  typical: sky130_fd_sc_hd__tt_025C_1v80.lib
+  ss: [sky130_fd_sc_hd__ss_100C_1v40.lib, sky130_fd_sc_hd__ss_100C_1v60.lib, sky130_fd_sc_hd__ss_n40C_1v28.lib]
+  ff: [sky130_fd_sc_hd__ff_100C_1v65.lib, sky130_fd_sc_hd__ff_100C_1v95.lib, sky130_fd_sc_hd__ff_n40C_1v95.lib]
+  sram_macro_corners: [TT_1p8V_25C, TT_1p7V_25C, TT_1p9V_25C, FF_1p8V_25C, SS_1p8V_25C, TT_1p8V_0C, TT_1p8V_100C]

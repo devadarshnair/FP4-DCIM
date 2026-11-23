@@ -1,0 +1,13 @@
+# Formal equivalence: rtl/src/leaf_unit.sv (row driver + AND-OR leaf) == generated 256-entry LUT spec.
+# Run from repo root: yosys -q tb/formal/leaf_dec_equiv.ys   (exits non-zero if not proven)
+read_verilog -sv rtl/src/row_driver.sv rtl/src/leaf_mult.sv rtl/src/leaf_unit.sv
+read_verilog -sv tb/formal/gen/leaf_spec.sv
+prep
+memory_map
+opt -fast
+rename leaf_unit gold_impl
+miter -equiv -flatten -ignore_gold_x -make_outputs gold_impl leaf_spec miter
+hierarchy -top miter
+flatten
+opt -fast
+sat -verify -prove trigger 0 -show-inputs -show-outputs miter

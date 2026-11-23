@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cimfp4"
+version = "0.0.1"
+description = "Alignment-free MXFP4/NVFP4 digital SRAM compute-in-memory: golden models, LLM harness, RTL generators, power and system models"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pyyaml>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-xdist", "hypothesis>=6", "ruff>=0.6", "pre-commit"]
+llm = ["torch>=2.4", "transformers>=4.45", "datasets>=2.20", "lm-eval>=0.4", "torchao>=0.8"]
+rtl = ["cocotb>=2.0", "cocotb-test"]
+power = ["pandas>=2", "matplotlib==3.11.2", "scipy>=1.11"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --basetemp=build/pytest"
+markers = [
+  "gpu: needs CUDA",
+  "slow: long-running (> 30 s)",
+  "llm: downloads or runs a real LLM",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["experiments/prelim", "third_party"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "NPY"]
+ignore = ["E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["E501"]
+"experiments/**/*.py" = ["E501"]
